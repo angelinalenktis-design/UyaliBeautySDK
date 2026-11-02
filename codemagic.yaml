@@ -1,7 +1,7 @@
 
 workflows:
   ios-check:
-    name: Сборка iOS-приложения
+    name: Проверка Bundle ID и сборка iOS
     instance_type: mac_mini_m2
     max_build_duration: 60
 
@@ -21,6 +21,15 @@ workflows:
           gdown "https://drive.google.com/uc?id=1UYlL-CFBe3RPC04Jip6X290s22bk_wWk" -O project.zip
           python3 -c 'import zipfile; zipfile.ZipFile("project.zip").extractall("source")'
 
+      - name: Check Bundle ID
+        script: |
+          set -e
+          PROJECT=$(find source -name "*.xcodeproj" -print -quit)
+          xcodebuild -project "$PROJECT" \
+            -scheme UyaliBeautySDKDemo \
+            -showBuildSettings |
+            grep PRODUCT_BUNDLE_IDENTIFIER
+
       - name: Set up signing
         script: |
           set -e
@@ -36,3 +45,4 @@ workflows:
 
     artifacts:
       - build/ios/ipa/*.ipa
+
