@@ -6,12 +6,11 @@ workflows:
     environment:
       xcode: latest
     scripts:
-      - name: Download project
+      - name: Download and inspect project
         script: |
+          set -e
           pip3 install gdown
           gdown "https://drive.google.com/uc?id=1UYlL-CFBe3RPC04Jip6X290s22bk_wWk" -O project.zip
-            - name: Extract and inspect project
-        script: |
           python3 -c 'import zipfile; zipfile.ZipFile("project.zip").extractall("source")'
           PROJECT=$(find source -name "*.xcodeproj" -print -quit)
           echo "PROJECT: $PROJECT"
