@@ -6,9 +6,13 @@ workflows:
 
     environment:
       xcode: latest
-      ios_signing:
+            ios_signing:
         distribution_type: ad_hoc
         bundle_identifier: app.velvet2604.spinach9219
+        certificates:
+          - UyaliBeautyCertificate
+        provisioning_profiles:
+          - UyaliBeautyCertificate
 
     scripts:
       - name: Download and extract project
