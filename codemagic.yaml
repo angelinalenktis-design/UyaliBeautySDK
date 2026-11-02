@@ -1,0 +1,17 @@
+workflows:
+  ios-check:
+    name: Проверка iOS-проекта
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+    environment:
+      xcode: latest
+    scripts:
+      - name: Download project
+        script: |
+          pip3 install gdown
+          gdown --fuzzy "https://drive.google.com/file/d/1UYlL-CFBe3RPC04Jip6X290s22bk_wWk/view" -O project.zip
+      - name: Extract and inspect project
+        script: |
+          unzip -q project.zip -d source
+          find source -name "*.xcodeproj" -o -name "*.xcworkspace"
+          find source -name "Package.swift"
