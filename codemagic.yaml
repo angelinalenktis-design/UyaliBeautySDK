@@ -29,8 +29,7 @@ workflows:
           PROJECT=$(find source -name "*.xcodeproj" -print -quit)
           xcode-project build-ipa \
             --project "$PROJECT" \
-            --scheme UyaliBeautySDKDemo \
-            --configuration Release
+            --scheme UyaliBeautySDKDemo
 
     artifacts:
       - build/ios/ipa/*.ipa
