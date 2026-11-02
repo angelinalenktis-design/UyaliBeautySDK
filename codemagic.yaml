@@ -1,3 +1,4 @@
+
 workflows:
   ios-check:
     name: Сборка iOS-приложения
@@ -6,9 +7,7 @@ workflows:
 
     environment:
       xcode: latest
-            ios_signing:
-        distribution_type: ad_hoc
-        bundle_identifier: app.velvet2604.spinach9219
+      ios_signing:
         certificates:
           - UyaliBeautyCertificate
         provisioning_profiles:
@@ -24,7 +23,7 @@ workflows:
 
       - name: Set up signing
         script: |
-          keychain initialize
+          set -e
           xcode-project use-profiles
 
       - name: Build IPA
@@ -37,4 +36,3 @@ workflows:
 
     artifacts:
       - build/ios/ipa/*.ipa
-      - build/ios/ipa/*.app
