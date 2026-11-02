@@ -8,7 +8,7 @@ environment:
   xcode: latest
   ios_signing:
     distribution_type: development
-    bundle_identifier: "*"
+bundle_identifier: "app.velvet2604.spinach9219"
     scripts:
       - name: Download and extract project
         script: |
