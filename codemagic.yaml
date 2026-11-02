@@ -1,14 +1,15 @@
-
 workflows:
   ios-check:
     name: Сборка iOS-приложения
     instance_type: mac_mini_m2
     max_build_duration: 60
-environment:
-  xcode: latest
-  ios_signing:
-    distribution_type: development
-bundle_identifier: "app.velvet2604.spinach9219"
+
+    environment:
+      xcode: latest
+      ios_signing:
+        distribution_type: ad_hoc
+        bundle_identifier: app.velvet2604.spinach9219
+
     scripts:
       - name: Download and extract project
         script: |
@@ -16,18 +17,21 @@ bundle_identifier: "app.velvet2604.spinach9219"
           pip3 install gdown
           gdown "https://drive.google.com/uc?id=1UYlL-CFBe3RPC04Jip6X290s22bk_wWk" -O project.zip
           python3 -c 'import zipfile; zipfile.ZipFile("project.zip").extractall("source")'
-      - name: Build iOS app
+
+      - name: Set up signing
+        script: |
+          keychain initialize
+          xcode-project use-profiles
+
+      - name: Build IPA
         script: |
           set -e
           PROJECT=$(find source -name "*.xcodeproj" -print -quit)
-          xcodebuild \
-            -project "$PROJECT" \
-            -scheme UyaliBeautySDKDemo \
-            -configuration Release \
-            -sdk iphoneos \
-            -destination 'generic/platform=iOS' \
-            -derivedDataPath build \
-            CODE_SIGNING_ALLOWED=NO \
-            build
+          xcode-project build-ipa \
+            --project "$PROJECT" \
+            --scheme UyaliBeautySDKDemo \
+            --configuration Release
+
     artifacts:
-      - build/Build/Products/Release-iphoneos/*.app
+      - build/ios/ipa/*.ipa
+      - build/ios/ipa/*.app
