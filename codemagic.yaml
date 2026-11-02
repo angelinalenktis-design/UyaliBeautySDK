@@ -1,7 +1,7 @@
 
 workflows:
   ios-check:
-    name: Проверка Bundle ID и сборка iOS
+    name: Сборка UyaliBeautySDK
     instance_type: mac_mini_m2
     max_build_duration: 60
 
@@ -21,14 +21,12 @@ workflows:
           gdown "https://drive.google.com/uc?id=1UYlL-CFBe3RPC04Jip6X290s22bk_wWk" -O project.zip
           python3 -c 'import zipfile; zipfile.ZipFile("project.zip").extractall("source")'
 
-      - name: Check Bundle ID
+      - name: Change Bundle ID
         script: |
           set -e
-          PROJECT=$(find source -name "*.xcodeproj" -print -quit)
-          xcodebuild -project "$PROJECT" \
-            -scheme UyaliBeautySDKDemo \
-            -showBuildSettings |
-            grep PRODUCT_BUNDLE_IDENTIFIER
+          PROJECT=$(find source -name "project.pbxproj" -print -quit)
+          sed -i '' 's/com.wuyali.beauty/app.velvet2604.spinach9219/g' "$PROJECT"
+          grep PRODUCT_BUNDLE_IDENTIFIER "$PROJECT"
 
       - name: Set up signing
         script: |
@@ -45,4 +43,3 @@ workflows:
 
     artifacts:
       - build/ios/ipa/*.ipa
-
