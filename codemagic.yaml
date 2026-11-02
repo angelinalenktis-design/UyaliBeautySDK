@@ -9,7 +9,7 @@ workflows:
       - name: Download project
         script: |
           pip3 install gdown
-          gdown --fuzzy "https://drive.google.com/file/d/1UYlL-CFBe3RPC04Jip6X290s22bk_wWk/view" -O project.zip
+          gdown "https://drive.google.com/uc?id=1UYlL-CFBe3RPC04Jip6X290s22bk_wWk" -O project.zip
       - name: Extract and inspect project
         script: |
           unzip -q project.zip -d source
